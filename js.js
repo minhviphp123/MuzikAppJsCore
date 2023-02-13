@@ -1,6 +1,4 @@
-const $ = document.querySelector.bind(document);
-const $$ = document.querySelectorAll.bind(document);
-
+//declare
 const playist = document.querySelector('.playlist');
 const header = document.querySelector('header h2');
 const cdThumb = document.querySelector('.cd');
@@ -16,11 +14,14 @@ const repeatBtn = document.querySelector('.fa-redo');
 const randomBtn = document.querySelector('.fa-random');
 const song = document.querySelector('.song');
 const volume = document.querySelector('.volume');
+const azBtn = document.querySelector('.az');
+const zaBtn = document.querySelector('.za');
+const searchSong = document.querySelector('.searchSong');
 
+//define app
 const app = {
 
     currentIndex: 0,
-
     isRepeat: false,
     isRamdom: false,
     playing: false,
@@ -123,6 +124,7 @@ const app = {
             }
         },
     ],
+
     render: function () {
         const htmls = this.songs.map((song, index) => {
             return `
@@ -144,6 +146,28 @@ const app = {
         playist.innerHTML = htmls.join('\n');
 
     },
+
+    render2: function (newSongs) {
+        const htmls = newSongs.map((song, index) => {
+            return `
+                <div class="song ${index === app.currentIndex ? 'active' : ''}" onClick="app.clickSong(${index})">
+                    <h3>${index}</h3>
+                    <div class="thumb" style="background-image: url('${song.links.images[0].url}')">
+                    </div>
+                    <div class="body">
+                        <h3 class="title">${song.name}</h3>
+                        <p class="author">${song.author}</p>
+                    </div>
+                    <div class="option">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+            `
+        });
+
+        playist.innerHTML = htmls.join('\n');
+    },
+
     defineProperties: function () {
         Object.defineProperty(this, 'currentSong', {
             get: function () {
@@ -153,29 +177,31 @@ const app = {
     }
     ,
     handleEvents: function () {
-        const cdWidth = cd.offsetWidth;
 
-        const cdAnimate = cd.animate([
-            { transform: 'rotate(360deg)' }
-        ], {
-            duration: 10000,//10s
-            iteration: Infinity
-        })
+        // const cdAnimate = cd.animate
+        //     (
+        //         [
+        //             { transform: 'rotate(0) rotate(360deg)' },
+        //         ],
+        //         {
+        //             duration: 10000,//10s
+        //             iteration: "infinity"
+        //         }
+        //     )
 
-        cdAnimate.pause();
+        // cdAnimate.pause();
 
         //toggle event
-
         playBtn.onclick = function () {
             if (app.playing === false) {
                 app.playing = true;
                 playBtn.className = 'fas fa-pause icon-pause';
-                cdAnimate.play();
+                app.rotateImg();
                 audio.play();
             } else {
                 app.playing = false;
                 playBtn.className = 'fas fa-play icon-play';
-                cdAnimate.pause();
+                app.pauseImg();
                 audio.pause();
             }
             audio.volume = 0.2;
@@ -236,7 +262,8 @@ const app = {
                 app.render();
             }
         }
-        //repeat
+
+        //repeat event
         repeatBtn.onclick = function () {
 
             app.isRepeat = !app.isRepeat;
@@ -245,22 +272,26 @@ const app = {
             }
             repeatBtn.classList.toggle('active', app.isRepeat);
             randomBtn.classList.remove('active');
-            cdAnimate.play();
+            // cdAnimate.play();
+            // app.rotateImg();
             if (app.isRepeat === true) {
                 audio.loop = app.isRepeat;
             } else {
-                audio.loop = app.isRepeat;
+                audio.loop = false;
             }
         }
 
-        //random 
+        //random event
         randomBtn.onclick = function () {
             app.isRamdom = !app.isRamdom;
             if (app.isRepeat === true) {
                 app.isRepeat = false;
             }
+            app.checkRR();
+
             randomBtn.classList.toggle('active', app.isRamdom);
             repeatBtn.classList.remove('active');
+
         }
 
         //end song event
@@ -268,16 +299,40 @@ const app = {
             nextBtn.click();
         }
 
-        //change volume
-        // progress.onchange = function (e) {
-        //     const seekTime = audio.duration / 100 * e.target.value;
-        //     audio.currentTime = seekTime;
-        // }
-
+        //change volume event
         volume.onchange = function (e) {
             audio.volume = e.target.value;
         }
 
+        //az event
+        azBtn.onclick = function () {
+            app.songs.sort(function (a, b) {
+                if (a.name < b.name) { return -1; }
+                if (a.name > b.name) { return 1; }
+                return 0;
+            })
+
+            app.render();
+        }
+
+        //za event
+        zaBtn.onclick = function () {
+            app.songs.sort(function (a, b) {
+                if (a.name < b.name) { return 1; }
+                if (a.name > b.name) { return -1; }
+                return 0;
+            })
+
+            app.render();
+        }
+
+        //search song event 
+        searchSong.oninput = function (e) {
+            console.log(e.target.value);
+            console.log(e.target.value);
+            let newSongs = app.songs.filter(song => song.name.toLowerCase().includes(e.target.value));
+            app.render2(newSongs);
+        }
     }
     ,
     loadCurrentSong: function () {
@@ -312,6 +367,26 @@ const app = {
             app.render();
         }
     },
+    rotateImg: function () {
+        // cd.style.animation = "rotate 10s infinite linear";
+        cd.style.animationName = 'rotate';
+        cd.style.animationDuration = '10s';
+        cd.style.animationIterationCount = 'infinite';
+        cd.style.animationTimingFunction = 'linear';
+    }
+    ,
+    pauseImg: function () {
+        cd.style.animation = 'back 0.3s linear';
+    }
+
+    ,
+    checkRR: function () {
+        if (app.isRamdom === true) {
+            audio.loop = false;
+        }
+
+    }
+    ,
     start: function () {
         this.defineProperties();
         this.handleEvents();

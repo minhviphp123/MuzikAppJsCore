@@ -2,76 +2,82 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Music Player</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-    integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-    crossorigin="anonymous" />
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+        crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css.css">
 </head>
 
 <body>
-  <div class="player">
-    <!-- Dashboard -->
-    <div class="dashboard">
-      <!-- Header -->
-      <header>
-        <h4>Now playing:</h4>
-        <h2>String 57th & 9th</h2>
-      </header>
+    <div class="player">
+        <!-- Dashboard -->
+        <div class="dashboard">
+            <!-- Header -->
+            <header>
+                <h4>Now playing:</h4>
+                <h2>String 57th & 9th</h2>
+            </header>
 
-      <!-- CD -->
-      <div class="cd">
-      </div>
+            <!-- CD -->
+            <div class="cd">
+            </div>
 
-      <!-- Control -->
-      <div class="control">
-        <div class="btn btn-repeat">
-          <i class="fas fa-redo"></i>
-        </div>
-        <div class="btn btn-prev">
-          <i class="fas fa-step-backward"></i>
-        </div>
-        <div class="btn btn-toggle-play">
-          <!-- <i class="fas fa-pause icon-pause"></i> -->
-          <i class="fas fa-play icon-play"></i>
-        </div>
-        <div class="btn btn-next">
-          <i class="fas fa-step-forward"></i>
-        </div>
-        <div class="btn btn-random">
-          <i class="fas fa-random"></i>
-        </div>
-      </div>
+            <!-- Control -->
+            <div class="control">
+                <div class="btn btn-repeat">
+                    <i class="fas fa-redo"></i>
+                </div>
+                <div class="btn btn-prev">
+                    <i class="fas fa-step-backward"></i>
+                </div>
+                <div class="btn btn-toggle-play">
+                    <!-- <i class="fas fa-pause icon-pause"></i> -->
+                    <i class="fas fa-play icon-play"></i>
+                </div>
+                <div class="btn btn-next">
+                    <i class="fas fa-step-forward"></i>
+                </div>
+                <div class="btn btn-random">
+                    <i class="fas fa-random"></i>
+                </div>
+            </div>
 
-      <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
-      <input class="volume" type="range" value="0" min="0" max="1" step="0.1">
+            <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+            <div class="volumeCtn">
+                <input class="volume" type="range" value="0" min="0" max="1" step="0.1">
+            </div>
 
-      <audio id="audio" src=""></audio>
+            <audio id="audio" src=""></audio>
+        </div>
+
+        <div class="list">
+            <div class="sort">
+                <div>
+                    <button class="az">A-Z</button>
+                    <button class="za">Z-A</button>
+                </div>
+                <input type="text" placeholder="search" class="searchSong">
+            </div>
+
+            <div class="playlist">
+
+
+
+            </div>
+        </div>
     </div>
 
-    <!-- Playlist -->
-    <div class="playlist">
-
     </div>
-  </div>
 
-  <!-- <audio controls>
-            <source src="https://cdn.discordapp.com/attachments/775740994595323954/775741533789224960/Alan_Walker_-_Sing_Me_To_SleepMP3_160K.mp3" type="audio/ogg">
-          Your browser does not support the audio element.
-          </audio>
-        
-
-          <img src="https://i.scdn.co/image/ab6761610000e5ebc02d416c309a68b04dc94576" alt=""> -->
-
-  </div>
-
-  <script src="js.js"></script>
+    <script src="js.js"></script>
+    <script src="test.js"></script>
 
 </body>
 
