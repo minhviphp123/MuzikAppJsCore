@@ -17,6 +17,7 @@ const volume = document.querySelector('.volume');
 const azBtn = document.querySelector('.az');
 const zaBtn = document.querySelector('.za');
 const searchSong = document.querySelector('.searchSong');
+const go = document.querySelector('.go');
 
 //define app
 const app = {
@@ -128,17 +129,15 @@ const app = {
     render: function () {
         const htmls = this.songs.map((song, index) => {
             return `
-                <div class="song ${index === app.currentIndex ? 'active' : ''}" onClick="app.clickSong(${index})">
-                    <h3>${index}</h3>
+                <div class="song ${index === app.currentIndex ? 'activeSong' : ''} " >
+    
                     <div class="thumb" style="background-image: url('${song.links.images[0].url}')">
                     </div>
                     <div class="body">
                         <h3 class="title">${song.name}</h3>
                         <p class="author">${song.author}</p>
                     </div>
-                    <div class="option">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
+
                 </div>
             `
         });
@@ -148,19 +147,28 @@ const app = {
     },
 
     render2: function (newSongs) {
-        const htmls = newSongs.map((song, index) => {
+
+        // console.log(newSongs);
+
+        // newSongs.map(song => {
+        //     const songIndex = app.songs.map(song => song.name).indexOf(song.name);
+        //     return { song, songIndex };
+        // })
+
+        // console.log(newSongs);
+
+        const htmls = newSongs.map((song) => {
             return `
-                <div class="song ${index === app.currentIndex ? 'active' : ''}" onClick="app.clickSong(${index})">
-                    <h3>${index}</h3>
+                <div class="song 
+                ${app.songs.indexOf(song) === app.currentIndex ? 'active' : ''
+                }" >
                     <div class="thumb" style="background-image: url('${song.links.images[0].url}')">
                     </div>
                     <div class="body">
                         <h3 class="title">${song.name}</h3>
                         <p class="author">${song.author}</p>
                     </div>
-                    <div class="option">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
+
                 </div>
             `
         });
@@ -177,19 +185,6 @@ const app = {
     }
     ,
     handleEvents: function () {
-
-        // const cdAnimate = cd.animate
-        //     (
-        //         [
-        //             { transform: 'rotate(0) rotate(360deg)' },
-        //         ],
-        //         {
-        //             duration: 10000,//10s
-        //             iteration: "infinity"
-        //         }
-        //     )
-
-        // cdAnimate.pause();
 
         //toggle event
         playBtn.onclick = function () {
@@ -227,6 +222,7 @@ const app = {
             if (app.isRamdom === true) {
                 app.playRandomSong();
                 app.render();
+
             } else {
                 app.currentIndex++;
                 if (app.currentIndex >= app.songs.length) {
@@ -241,7 +237,8 @@ const app = {
                 app.render();
             }
 
-            console.log(app.currentIndex);
+            app.goToCurrentSong();
+
         }
 
         //pre Song
@@ -261,6 +258,7 @@ const app = {
                 audio.play();
                 app.render();
             }
+            app.goToCurrentSong();
         }
 
         //repeat event
@@ -272,8 +270,6 @@ const app = {
             }
             repeatBtn.classList.toggle('active', app.isRepeat);
             randomBtn.classList.remove('active');
-            // cdAnimate.play();
-            // app.rotateImg();
             if (app.isRepeat === true) {
                 audio.loop = app.isRepeat;
             } else {
@@ -291,7 +287,7 @@ const app = {
 
             randomBtn.classList.toggle('active', app.isRamdom);
             repeatBtn.classList.remove('active');
-
+            // app.goToCurrentSong();
         }
 
         //end song event
@@ -302,6 +298,14 @@ const app = {
         //change volume event
         volume.onchange = function (e) {
             audio.volume = e.target.value;
+        }
+
+        //search song event 
+        searchSong.oninput = function (e) {
+            console.log(e.target.value);
+            console.log(e.target.value);
+            let newSongs = app.songs.filter(song => song.name.toLowerCase().includes(e.target.value));
+            app.render2(newSongs);
         }
 
         //az event
@@ -326,13 +330,26 @@ const app = {
             app.render();
         }
 
-        //search song event 
-        searchSong.oninput = function (e) {
-            console.log(e.target.value);
-            console.log(e.target.value);
-            let newSongs = app.songs.filter(song => song.name.toLowerCase().includes(e.target.value));
-            app.render2(newSongs);
+
+        //click song event
+        playist.onclick = function (e) {
+            app.playing = true;
+            const pickedSong = e.target.closest('.song');
+            if (pickedSong) {
+                const songName = pickedSong.querySelector('.title').innerText;
+                const id = app.songs.map(song => song.name).indexOf(songName);
+                app.currentIndex = id;
+                app.loadCurrentSong();
+                audio.play();
+                app.render();
+                app.goToCurrentSong();
+                app.rotateImg();
+                playBtn.className = 'fas fa-pause icon-pause';
+
+            }
+
         }
+
     }
     ,
     loadCurrentSong: function () {
@@ -354,19 +371,8 @@ const app = {
         }
         audio.play();
     }
-    ,
-    clickSong: function (index) {
-        if (index !== this.currentIndex) {
-            app.currentIndex = index;
-            app.loadCurrentSong();
 
-            if (app.playing === false) {
-                playBtn.click();
-            }
-            audio.play();
-            app.render();
-        }
-    },
+    ,
     rotateImg: function () {
         // cd.style.animation = "rotate 10s infinite linear";
         cd.style.animationName = 'rotate';
@@ -385,6 +391,9 @@ const app = {
             audio.loop = false;
         }
 
+    },
+    goToCurrentSong: function () {
+        document.querySelector('.activeSong').scrollIntoView();
     }
     ,
     start: function () {
