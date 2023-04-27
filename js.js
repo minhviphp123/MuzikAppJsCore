@@ -27,15 +27,13 @@ const app = {
     isRamdom: false,
     playing: false,
 
-    songs: [
-        {
+    songs: [{
             "name": "Sing me to sleep",
             "author": "Alan Walker",
             "url": "https://cdn.discordapp.com/attachments/775740994595323954/775741533789224960/Alan_Walker_-_Sing_Me_To_SleepMP3_160K.mp3",
             "id": 0,
             "links": {
-                "images": [
-                    {
+                "images": [{
                         "url": "https://i.scdn.co/image/ab6761610000e5ebc02d416c309a68b04dc94576"
                     },
                     {
@@ -50,8 +48,7 @@ const app = {
             "url": "https://cdn.discordapp.com/attachments/775740994595323954/775741536591806484/Alan_Walker_-_Fade_NCS_ReleaseMP3_160K.mp3",
             "id": 1,
             "links": {
-                "images": [
-                    {
+                "images": [{
                         "url": "https://i.scdn.co/image/ab6761610000e5ebc02d416c309a68b04dc94576"
                     },
                     {
@@ -66,8 +63,7 @@ const app = {
             "url": "https://cdn.discordapp.com/attachments/775740994595323954/775741544149549096/Andromedik_-_SHE_NCS_ReleaseMP3_160K.mp3",
             "id": 2,
             "links": {
-                "images": [
-                    {
+                "images": [{
                         "url": "https://i.scdn.co/image/ab6761610000e5eb37db62ee361f796bef5b49a6"
                     },
                     {
@@ -82,8 +78,7 @@ const app = {
             "url": "https://cdn.discordapp.com/attachments/775740994595323954/775741547203002389/Ascence_-_About_You_NCS_ReleaseMP3_160K.mp3",
             "id": 3,
             "links": {
-                "images": [
-                    {
+                "images": [{
                         "url": "https://i.scdn.co/image/ab6761610000e5eb6e50f29c671af8aff68b321d"
                     },
                     {
@@ -98,8 +93,7 @@ const app = {
             "url": "https://cdn.discordapp.com/attachments/775740994595323954/775741549177995264/Cartoon_-_On___On_feat._Daniel_Levi_NCS_ReleaseMP3_160K.mp3",
             "id": 4,
             "links": {
-                "images": [
-                    {
+                "images": [{
                         "url": "https://i.scdn.co/image/ab6761610000e5eb65d82d90b55b4dd3cbb2efd2"
                     },
                     {
@@ -114,8 +108,7 @@ const app = {
             "url": "https://cdn.discordapp.com/attachments/775740994595323954/775741580619284540/Clarx___Harddope_-_Castle_NCS_ReleaseMP3_160K.mp3",
             "id": 5,
             "links": {
-                "images": [
-                    {
+                "images": [{
                         "url": "https://i.scdn.co/image/ab6761610000e5eb015af0621865cd5cd5046c2c"
                     },
                     {
@@ -126,7 +119,7 @@ const app = {
         },
     ],
 
-    render: function () {
+    render: function() {
         const htmls = this.songs.map((song, index) => {
             return `
                 <div class="song ${index === app.currentIndex ? 'activeSong' : ''} " >
@@ -146,7 +139,7 @@ const app = {
 
     },
 
-    render2: function (newSongs) {
+    render2: function(newSongs) {
 
         // console.log(newSongs);
 
@@ -176,18 +169,17 @@ const app = {
         playist.innerHTML = htmls.join('\n');
     },
 
-    defineProperties: function () {
+    defineProperties: function() {
         Object.defineProperty(this, 'currentSong', {
-            get: function () {
+            get: function() {
                 return this.songs[this.currentIndex];
             }
         })
-    }
-    ,
-    handleEvents: function () {
+    },
+    handleEvents: function() {
 
         //toggle event
-        playBtn.onclick = function () {
+        playBtn.onclick = function() {
             if (app.playing === false) {
                 app.playing = true;
                 playBtn.className = 'fas fa-pause icon-pause';
@@ -203,7 +195,7 @@ const app = {
         }
 
         //ontimeupdate event
-        audio.ontimeupdate = function () {
+        audio.ontimeupdate = function() {
             if (audio.duration) {
                 let progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
                 progress.value = progressPercent;
@@ -212,13 +204,13 @@ const app = {
         }
 
         //seek event(tua)
-        progress.onchange = function (e) {
+        progress.onchange = function(e) {
             const seekTime = audio.duration / 100 * e.target.value;
             audio.currentTime = seekTime;
         }
 
         //next song
-        nextBtn.onclick = function () {
+        nextBtn.onclick = function() {
             if (app.isRamdom === true) {
                 app.playRandomSong();
                 app.render();
@@ -242,7 +234,7 @@ const app = {
         }
 
         //pre Song
-        prevBtn.onclick = function () {
+        prevBtn.onclick = function() {
             if (app.isRamdom === true) {
                 app.playRandomSong();
                 app.render();
@@ -262,7 +254,7 @@ const app = {
         }
 
         //repeat event
-        repeatBtn.onclick = function () {
+        repeatBtn.onclick = function() {
 
             app.isRepeat = !app.isRepeat;
             if (app.isRamdom === true) {
@@ -278,7 +270,7 @@ const app = {
         }
 
         //random event
-        randomBtn.onclick = function () {
+        randomBtn.onclick = function() {
             app.isRamdom = !app.isRamdom;
             if (app.isRepeat === true) {
                 app.isRepeat = false;
@@ -291,17 +283,17 @@ const app = {
         }
 
         //end song event
-        audio.onended = function () {
+        audio.onended = function() {
             nextBtn.click();
         }
 
         //change volume event
-        volume.onchange = function (e) {
+        volume.onchange = function(e) {
             audio.volume = e.target.value;
         }
 
         //search song event 
-        searchSong.oninput = function (e) {
+        searchSong.oninput = function(e) {
             console.log(e.target.value);
             console.log(e.target.value);
             let newSongs = app.songs.filter(song => song.name.toLowerCase().includes(e.target.value));
@@ -309,8 +301,8 @@ const app = {
         }
 
         //az event
-        azBtn.onclick = function () {
-            app.songs.sort(function (a, b) {
+        azBtn.onclick = function() {
+            app.songs.sort(function(a, b) {
                 if (a.name < b.name) { return -1; }
                 if (a.name > b.name) { return 1; }
                 return 0;
@@ -320,8 +312,8 @@ const app = {
         }
 
         //za event
-        zaBtn.onclick = function () {
-            app.songs.sort(function (a, b) {
+        zaBtn.onclick = function() {
+            app.songs.sort(function(a, b) {
                 if (a.name < b.name) { return 1; }
                 if (a.name > b.name) { return -1; }
                 return 0;
@@ -332,7 +324,7 @@ const app = {
 
 
         //click song event
-        playist.onclick = function (e) {
+        playist.onclick = function(e) {
             app.playing = true;
             const pickedSong = e.target.closest('.song');
             if (pickedSong) {
@@ -350,15 +342,13 @@ const app = {
 
         }
 
-    }
-    ,
-    loadCurrentSong: function () {
+    },
+    loadCurrentSong: function() {
         header.textContent = this.currentSong.name;
         cdThumb.style.backgroundImage = `url('${this.currentSong.links.images[0].url}')`;
         audio.src = this.currentSong.url;
-    }
-    ,
-    playRandomSong: function () {
+    },
+    playRandomSong: function() {
         let newIndex;
         do {
             newIndex = Math.floor(Math.random() * app.songs.length);
@@ -373,33 +363,31 @@ const app = {
     }
 
     ,
-    rotateImg: function () {
+    rotateImg: function() {
         // cd.style.animation = "rotate 10s infinite linear";
         cd.style.animationName = 'rotate';
         cd.style.animationDuration = '10s';
         cd.style.animationIterationCount = 'infinite';
         cd.style.animationTimingFunction = 'linear';
-    }
-    ,
-    pauseImg: function () {
+    },
+    pauseImg: function() {
         cd.style.animation = 'back 0.3s linear';
     }
 
     ,
-    checkRR: function () {
+    checkRR: function() {
         if (app.isRamdom === true) {
             audio.loop = false;
         }
 
     },
-    goToCurrentSong: function () {
+    goToCurrentSong: function() {
         document.querySelector('.activeSong').scrollIntoView();
-    }
-    ,
-    start: function () {
+    },
+    start: function() {
         this.defineProperties();
         this.handleEvents();
-        this.loadCurrentSong();//render a song when starting app
+        this.loadCurrentSong(); //render a song when starting app
         this.render();
     }
 
@@ -410,6 +398,4 @@ app.start();
 
 
 
-
-
-
+///nhac hay code gioi=))
